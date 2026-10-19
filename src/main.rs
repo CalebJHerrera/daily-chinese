@@ -70,6 +70,29 @@ impl App {
                 final_row = final_row.push(word_col);
             }
 
+            // Sub row
+            let pos_text = if !entry.part_of_speech.is_empty() {
+                format!("{}", entry.part_of_speech.join(", "))
+            } else {
+                String::from("Unknown")
+            };
+
+            let mw_processed_text: Vec<String> = entry
+                .measure_words
+                .iter()
+                .map(|mw| format!("{} ({})", mw.simplified, mw.traditional))
+                .collect();
+
+            let mw_text = if !mw_processed_text.is_empty() {
+                mw_processed_text.join(", ")
+            } else {
+                String::from("None Specified")
+            };
+
+            let sub_text = format!("{pos_text}, MW: {mw_text}");
+
+            let sub_row = row![text(sub_text).size(15)];
+
             // List of 5 top meanings
             let total_meanings = entry.meanings.len();
             let mut meanings_col = column![].align_x(Alignment::Start);
@@ -102,11 +125,12 @@ impl App {
             // Entry dependents
             let dict_page = column![final_row.padding(2), meanings_container,]
                 .align_x(Alignment::Center)
-                .width(iced::Length::Fixed(500f32))
+                .width(iced::Length::Fixed(600f32))
                 .height(iced::Length::Fixed(250f32));
 
             column![
                 dict_page,
+                sub_row,
                 text(format!("page {} of {}", self.page + 1, self.words.len())).size(16),
                 buttons
             ]
@@ -134,15 +158,15 @@ pub fn main() -> iced::Result {
         .font(include_bytes!(
             "../assets/noto_sans_sc/NotoSansSC-Regular.ttf"
         ))
-        .title("Test")
+        .title("random-chinese")
         .resizable(false)
-        .window_size(iced::Size::new(500f32, 320f32))
+        .window_size(iced::Size::new(600f32, 350f32))
         .position(iced::window::Position::SpecificWith(
             |window_size, monitor_size| Point {
                 x: 0.0,
                 y: monitor_size.height - window_size.height,
             },
         ))
-        .theme(iced::Theme::Nord)
+        .theme(iced::Theme::KanagawaWave)
         .run()
 }
