@@ -787,7 +787,6 @@ dependencies = [
  "iced",
  "jieba-rs",
  "random_word",
- "serde_json",
 ]
 
 [[package]]
