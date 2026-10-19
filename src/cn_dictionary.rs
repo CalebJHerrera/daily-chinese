@@ -1,5 +1,5 @@
-use random_word::Lang;
 use jieba_rs::Jieba;
+use random_word::Lang;
 
 #[derive(Debug, Clone)]
 pub struct MeasureWord {
@@ -27,9 +27,15 @@ fn get_word() -> String {
 
 fn tag_word(jieba: &Jieba, word: &str, meanings: &Vec<String>) -> Vec<String> {
     // From meanings
-    if meanings.iter().any(|v| v.contains("idiom") || v.contains("set phrase")) {
+    if meanings
+        .iter()
+        .any(|v| v.contains("idiom") || v.contains("set phrase"))
+    {
         return vec!["Idiom / Phrase".to_string()];
-    } else if meanings.iter().any(|v| v.starts_with("to ") && !v.starts_with("to the")) {
+    } else if meanings
+        .iter()
+        .any(|v| v.starts_with("to ") && !v.starts_with("to the"))
+    {
         return vec!["Verb".to_string()];
     }
 
@@ -75,52 +81,62 @@ fn map_jb_tags(tag: &str) -> String {
 }
 
 pub fn query_dictionary(jieba: &Jieba) -> Vec<ChineseWord> {
-    let result = chinese_dictionary::query_by_simplified(&get_word());
-    let mut word = Vec::new();
+    loop {
+        let possible_word = get_word();
+        let result = chinese_dictionary::query_by_simplified(&possible_word);
+        if result.is_empty() {
+            continue;
+        }
 
-    for entry in &result {
-        let mut daily_word = ChineseWord::default();
+        let mut words = Vec::new();
 
-        let simplified = entry.simplified();
-        let traditional = entry.traditional();
-        let pinyin = entry.pinyin().marks();
+        for entry in &result {
+            let mut daily_word = ChineseWord::default();
 
-        let mut meanings = Vec::new();
-        let mut measure_words = Vec::new();
+            let simplified = entry.simplified();
+            let traditional = entry.traditional();
+            let pinyin = entry.pinyin().marks();
 
-        let mut defined_variant = false;
+            let mut meanings = Vec::new();
+            let mut measure_words = Vec::new();
 
-        for thing in entry.english() {
-            let meaning = thing.gloss().value();
-            if meaning.contains("variant of ") {
-                defined_variant = true;
+            let mut defined_variant = false;
+
+            for thing in entry.english() {
+                let meaning = thing.gloss().value();
+                if meaning.contains("variant of ") {
+                    defined_variant = true;
+                }
+
+                meanings.push(String::from(meaning));
             }
 
-            meanings.push(String::from(meaning));
+            for word in entry.measure_words() {
+                let mw_simplified = word.value().simplified();
+                let mw_traditional = word.value().traditional();
+
+                let mw_struct = MeasureWord {
+                    simplified: String::from(mw_simplified),
+                    traditional: String::from(mw_traditional),
+                };
+
+                measure_words.push(mw_struct);
+            }
+
+            daily_word.simplified = String::from(simplified);
+            daily_word.traditional = String::from(traditional);
+            daily_word.pinyin = String::from(pinyin);
+            daily_word.meanings = meanings;
+            daily_word.measure_words = measure_words;
+            daily_word.is_variant = defined_variant;
+
+            daily_word.part_of_speech =
+                tag_word(&jieba, &daily_word.simplified, &daily_word.meanings);
+            words.push(daily_word);
+
+            if !words.is_empty() {
+                return words;
+            }
         }
-
-        for word in entry.measure_words() {
-            let mw_simplified = word.value().simplified();
-            let mw_traditional = word.value().traditional();
-
-            let mw_struct = MeasureWord {
-                simplified: String::from(mw_simplified),
-                traditional: String::from(mw_traditional),
-            };
-
-            measure_words.push(mw_struct);
-        }
-
-        daily_word.simplified = String::from(simplified);
-        daily_word.traditional = String::from(traditional);
-        daily_word.pinyin = String::from(pinyin);
-        daily_word.meanings = meanings;
-        daily_word.measure_words = measure_words;
-        daily_word.is_variant = defined_variant;
-
-        daily_word.part_of_speech = tag_word(&jieba, &daily_word.simplified, &daily_word.meanings);
-        word.push(daily_word);
     }
-
-    word
 }
