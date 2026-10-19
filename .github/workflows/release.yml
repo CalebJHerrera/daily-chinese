@@ -41,12 +41,12 @@ jobs:
           #  binary_ext: ""
           #  use_cross: false
           #
-          # Windows
-          - name: Windows x86_64
-            os: windows-latest
-            target: x86_64-pc-windows-msvc
-            binary_ext: ".exe"
-            use_cross: false
+          # # Windows
+          # - name: Windows x86_64
+          #   os: windows-latest
+          #   target: x86_64-pc-windows-msvc
+          #   binary_ext: ".exe"
+          #   use_cross: false
           #
           #- name: Windows ARM64
           #  os: windows-latest
