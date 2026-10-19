@@ -759,6 +759,7 @@ dependencies = [
  "chinese_dictionary",
  "iced",
  "random_word",
+ "serde_json",
 ]
 
 [[package]]
