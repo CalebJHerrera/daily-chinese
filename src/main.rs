@@ -10,15 +10,16 @@ fn main(){
     let result = chinese_dictionary::query_by_simplified(word);
     for entry in result {
         let simplified = entry.simplified();
-        println!("Simplified: {}", simplified);
+        let traditional = entry.traditional();
+        println!("Simplified: {}, Traditional: {}", simplified, traditional);
 
         let pinyin = entry.pinyin().marks();
         println!("Pinyin: {}", pinyin);
 
-        print!("Meanings: ");
+        println!("Meanings: ");
         for eng in entry.english() {
             let meaning = eng.gloss().value();
-            print!("| {} |", meaning);
+            println!("- {}", meaning);
         }
     }
 }
