@@ -1,9 +1,8 @@
 mod cn_dictionary;
 
 use crate::cn_dictionary::{ChineseWord, query_dictionary};
-use iced::widget::{button, column, container, row, text, Column, Row};
-use iced::{Alignment, Point, Program};
-use iced::border::width;
+use iced::widget::{Column, Row, button, column, container, row, text};
+use iced::{Alignment, Point};
 use jieba_rs::Jieba;
 
 #[derive(Debug, Clone)]
@@ -13,7 +12,6 @@ enum Message {
     Next,
 }
 
-#[derive(Default)]
 struct App {
     words: Vec<ChineseWord>,
     jieba: Jieba,
@@ -65,10 +63,7 @@ impl App {
 
                 let char_col = format!("{s}{t}");
 
-                let word_col = column![
-                    text(p).size(16),
-                    text(char_col).size(36),
-                ]
+                let word_col = column![text(p).size(16), text(char_col).size(36),]
                     .align_x(Alignment::Center)
                     .width(iced::Length::Fixed(55f32));
 
@@ -102,8 +97,7 @@ impl App {
                 meanings_col = meanings_col.push(t);
             }
 
-            let meanings_container = container(meanings_col)
-                .width(iced::Length::Fixed(450.0));
+            let meanings_container = container(meanings_col).width(iced::Length::Fixed(450.0));
 
             // Entry dependents
             let dict_page = column![final_row.padding(2), meanings_container,]
@@ -113,15 +107,11 @@ impl App {
 
             column![
                 dict_page,
-                text(format!(
-                    "page {} of {}",
-                    (self.page + 1),
-                    (self.words.len())
-                ))
-                .size(16),
+                text(format!("page {} of {}", self.page + 1, self.words.len())).size(16),
                 buttons
             ]
             .align_x(Alignment::Center)
+            .spacing(5)
         } else {
             column![text("Something went wrong").size(40), buttons]
         }
@@ -146,7 +136,7 @@ pub fn main() -> iced::Result {
         ))
         .title("Test")
         .resizable(false)
-        .window_size(iced::Size::new(500f32, 300f32))
+        .window_size(iced::Size::new(500f32, 320f32))
         .position(iced::window::Position::SpecificWith(
             |window_size, monitor_size| Point {
                 x: 0.0,

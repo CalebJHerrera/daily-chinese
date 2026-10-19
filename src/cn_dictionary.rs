@@ -25,7 +25,7 @@ fn get_word() -> String {
     word.to_string()
 }
 
-fn tag_word(jieba: &Jieba, word: &str, meanings: &Vec<String>) -> Vec<String> {
+fn tag_word(jieba: &Jieba, word: &str, meanings: &[String]) -> Vec<String> {
     // From meanings
     if meanings
         .iter()
@@ -47,7 +47,7 @@ fn tag_word(jieba: &Jieba, word: &str, meanings: &Vec<String>) -> Vec<String> {
         return vec!["Idiom / Phrase".to_string()];
     }
 
-    let raw_tags = jieba.tag(&word, true);
+    let raw_tags = jieba.tag(word, true);
     let mut tags = Vec::new();
     for item in raw_tags {
         let raw_tag = item.tag.to_string();
@@ -131,7 +131,7 @@ pub fn query_dictionary(jieba: &Jieba) -> Vec<ChineseWord> {
             daily_word.is_variant = defined_variant;
 
             daily_word.part_of_speech =
-                tag_word(&jieba, &daily_word.simplified, &daily_word.meanings);
+                tag_word(jieba, &daily_word.simplified, &daily_word.meanings);
             words.push(daily_word);
 
             if !words.is_empty() {
