@@ -7,6 +7,3 @@ edition = "2024"
 chinese_dictionary = "4.1.0"
 iced = "0.14.0"
 random_word = { version = "0.5.2", features = ["zh"] }
-
-[env]
-CHINESE_DICTIONARY_DATA_DIR = { value = "vendor/chinese_dictionary-data-4.1.0", relative = true }
