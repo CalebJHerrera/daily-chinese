@@ -1,0 +1,16 @@
+import { AboutSlint, VerticalBox } from "std-widgets.slint";
+
+export component MainWindow inherits Window {
+    always-on-top: true;
+    no-frame: true;
+    width: 280px;
+    height: 200px;
+
+    WindowMoveArea {
+        VerticalBox {
+            Text {
+                text: "一";
+            }
+        }
+    }
+}

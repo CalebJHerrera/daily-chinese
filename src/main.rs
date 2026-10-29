@@ -1,13 +1,8 @@
-mod enums;
+slint::include_modules!();
 
-use iced::Point;
-use crate::enums::{WindowMessage, InteractMessage};
+fn main() -> Result<(), slint::PlatformError> {
+    let app = MainWindow::new()?;
+    app.run()?;
 
-enum Message {
-    UI(WindowMessage),
-    Interact(InteractMessage),
-}
-
-fn main() {
-    println!("Totally necessary rewrite, bear with me real quick");
+    Ok(())
 }
