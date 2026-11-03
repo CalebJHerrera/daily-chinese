@@ -1,11 +1,15 @@
 # Daily-Chinese
 I'm Chinese but don't know mandarin, so I've decided to try and create a lightweight app that lets me passively learn more characters.
 
-I've also coded it in rust because I found its syntax and borrow checker interesting... 
+I've also coded it in rust because I found its speed and tendency to abstract common processes interesting.
 
 It was a lot harder than I thought.
 
-Below is an AI-assisted attributions paragraph (haven't written things like this before, really cool!)
+At the bottom is an AI-assisted attributions paragraph (haven't written things like this before, really cool!)
+
+# What this is
+
+It's a small pop up that shows you a "level 1" (extremely common, based on the random_zh crate's level system I suppose) Chinese simplified-traditional character pair. Shows up every x minutes and changes every y hours (haven't thought too much about the UX yet). 
 
 ## Credits & Licensing
 

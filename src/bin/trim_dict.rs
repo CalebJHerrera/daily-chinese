@@ -2,21 +2,11 @@ use random_zh::{RandomZhOptions, random_zh};
 use std::collections::{BTreeMap, HashMap};
 use std::fs::File;
 use std::path::Path;
-
-#[derive(serde::Serialize)] // allow the JSONification of the entries.
-struct Entry {
-    traditional: String,
-    simplified: String,
-    pinyin: String,
-    definitions: Vec<String>,
-}
+use daily_chinese::Entry;
 
 fn to_pinyin(sharky: &str) -> String {
     fn is_vowel(fishy: char) -> bool {
-        match fishy {
-            'a' | 'e' | 'i' | 'o' | 'u' | 'ü' => true,
-            _ => false,
-        }
+        matches!(fishy, 'a' | 'e' | 'i' | 'o' | 'u' | 'ü')
     }
 
     fn refine(yellowtail: &str) -> String {

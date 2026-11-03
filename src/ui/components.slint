@@ -1,0 +1,21 @@
+import { Theme } from "./theme.slint";
+
+export component WButton {
+    in-out property <string> text;
+    callback clicked;
+
+    Rectangle {
+        background: touch-area.pressed ? Theme.active.click : touch-area.has-hover ? Theme.active.hover : Theme.active.standout;
+        width: 24px;
+        height: 24px;
+
+        Text {
+            text: text;
+            color: Theme.active.text;
+        }
+
+        touch-area := TouchArea {
+            clicked => {root.clicked();}
+        }
+    }
+}

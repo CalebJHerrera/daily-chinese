@@ -1,0 +1,27 @@
+export struct Colors {
+    background: color,
+    standout: color,
+    hover: color,
+    click: color,
+    text: color
+}
+
+export global Theme {
+    in-out property <Colors> light: {
+        background: #FFFFFF,
+        standout: #808080,
+        hover: #000000,
+        click: #FF6E00,
+        text: #000000,
+    };
+
+    in-out property <Colors> dark: {
+        background: #000000,
+        standout: #808080,
+        hover: #FFFFFF,
+        click: #FF6E00,
+        text: #FFFFFF
+    };
+
+    in-out property <Colors> active: Theme.light;
+}

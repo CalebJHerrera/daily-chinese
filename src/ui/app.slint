@@ -1,15 +1,53 @@
-import { AboutSlint, VerticalBox } from "std-widgets.slint";
+import { Theme } from "./theme.slint";
+import { WButton } from "./components.slint";
 
 export component MainWindow inherits Window {
     always-on-top: true;
     no-frame: true;
-    width: 280px;
-    height: 200px;
+    background: transparent;
+    width: 320px;
+    height: 220px;
+    
+    in-out property <string> simplified;
+    in-out property <string> traditional;
+    in-out property <string> pinyin;
+    in-out property <[string]> definitions;
+    in-out property <bool> dark-mode-enabled;
+
+    callback hide-function;
+    callback quit-function;
 
     WindowMoveArea {
-        VerticalBox {
-            Text {
-                text: "一";
+        Rectangle {
+            background: Theme.active.background;
+            drop-shadow-color: black;
+
+            clip: true;
+            VerticalLayout {
+                padding: 15px;
+                alignment: start;
+
+                HorizontalLayout {
+                    alignment: end;
+
+                    WButton {
+                        text: "-";
+                        clicked => hide-function();
+                    }
+                }
+
+                Text {
+                    text: pinyin;
+                }
+                Text {
+                    text: simplified;
+                }
+                Text {
+                    text: traditional;
+                }
+                for definition in definitions: Text {
+                    text: definition;
+                }
             }
         }
     }
